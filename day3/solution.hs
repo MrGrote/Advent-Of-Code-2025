@@ -1,19 +1,16 @@
 import Data.Char (digitToInt)
 
-findJoltage1 :: Int -> Int -> [Char] -> Int
-findJoltage1 hi lo (x : xs)
-  | null xs && n > lo = hi * 10 + n
-  | null xs = hi * 10 + lo
-  | n > hi = findJoltage1 n 0 xs
-  | n > lo = findJoltage1 hi n xs
-  | otherwise = findJoltage1 hi lo xs
-  where
-    n = digitToInt x
+findJoltage1 :: [Char] -> Int
+findJoltage1 x =
+  let hi = maximum $ init x
+      rest = drop 1 $ dropWhile (/= hi) x
+      lo = maximum rest
+   in digitToInt hi * 10 + digitToInt lo
 
 part1 :: IO ()
 part1 = do
   input <- readFile "day3/input.txt"
-  print $ sum $ findJoltage1 0 0 <$> lines input
+  print $ sum $ findJoltage1 <$> lines input
 
 findJoltage2 :: [Char] -> Int -> [Char] -> Int
 findJoltage2 batteries number bank
