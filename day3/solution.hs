@@ -13,11 +13,10 @@ part1 = do
   print $ sum $ findJoltage1 <$> lines input
 
 findJoltage2 :: [Char] -> Int -> [Char] -> Int
-findJoltage2 batteries number bank
-  | number == 0 = (read :: String -> Int) batteries
-  | otherwise =
-      let nextDigit = maximum (take (length bank - number + 1) bank)
-       in findJoltage2 (batteries ++ [nextDigit]) (number - 1) (drop 1 (dropWhile (/= nextDigit) bank))
+findJoltage2 batteries 0 bank = (read :: String -> Int) batteries
+findJoltage2 batteries number bank =
+  let nextDigit = maximum (take (length bank - number + 1) bank)
+   in findJoltage2 (batteries ++ [nextDigit]) (number - 1) (drop 1 (dropWhile (/= nextDigit) bank))
 
 part2 :: IO ()
 part2 = do
