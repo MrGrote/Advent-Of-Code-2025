@@ -15,9 +15,9 @@ part1 = do
 findJoltage2 :: [Char] -> Int -> [Char] -> Int
 findJoltage2 batteries number bank
   | number == 0 = (read :: String -> Int) batteries
-  | otherwise = findJoltage2 (batteries ++ [nextDigit]) (number - 1) (drop 1 (dropWhile (/= nextDigit) bank))
-  where
-    nextDigit = maximum (take (length bank - number + 1) bank)
+  | otherwise =
+      let nextDigit = maximum (take (length bank - number + 1) bank)
+       in findJoltage2 (batteries ++ [nextDigit]) (number - 1) (drop 1 (dropWhile (/= nextDigit) bank))
 
 part2 :: IO ()
 part2 = do
