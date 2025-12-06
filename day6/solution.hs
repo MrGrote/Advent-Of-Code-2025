@@ -11,7 +11,9 @@ part1 = sum . map (\row -> solveRow (head $ last row) (map read (init row)))
 splitOnEmpty :: (Foldable t) => [t Char] -> [[t Char]]
 splitOnEmpty [] = []
 splitOnEmpty [x] = [[x] | not $ all (== ' ') x]
-splitOnEmpty x = takeWhile (not . all (== ' ')) x : splitOnEmpty (drop 1 (dropWhile (not . all (== ' ')) x))
+splitOnEmpty x = start : splitOnEmpty (drop 1 end)
+  where
+    (start, end) = break (all (== ' ')) x
 
 part2 :: (Num a, Read a) => [[Char]] -> a
 part2 rows =
