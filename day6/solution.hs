@@ -1,3 +1,8 @@
+{- cabal:
+build-depends:
+  base,
+  text ^>=2.0.2
+-}
 import Data.List (transpose)
 import Data.Text (pack, splitOn, unpack)
 

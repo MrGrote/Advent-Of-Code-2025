@@ -1,4 +1,4 @@
-import Data.Function.Memoize (memoize2)
+import Data.Function.Memoize (memoize)
 import Data.List (elemIndex, elemIndices, find, tails, transpose)
 import Data.Maybe (fromMaybe)
 
@@ -25,16 +25,15 @@ part1 n (x : y : xs) = part1 (n + newSplits) (newLine : xs)
     newLine = zipWith getNextCharacter xWindow yWindow
 part1 n (x : xs) = n
 
-part2' :: (Int, Int) -> [[Int]] -> Integer
-part2' (x, y) indices =
-  case find (> y) (indices !! x) of
-    Nothing -> 1
-    Just val -> memoizedPart2' (x - 1, val) indices + memoizedPart2' (x + 1, val) indices
-
-memoizedPart2' = memoize2 part2'
+part2' :: [[Int]] -> (Int, Int) -> Integer
+part2' indices = go
+  where
+    go = memoize $ \(x, y) -> case find (> y) (indices !! x) of
+      Nothing -> 1
+      Just val -> go (x - 1, val) + go (x + 1, val)
 
 part2 :: [[Char]] -> Integer
-part2 inp = memoizedPart2' (x, 0) indices
+part2 inp = part2' indices (x, 0)
   where
     x = fromMaybe 0 (elemIndex '|' (head inp))
     indices = map (elemIndices '^') (transpose inp)
